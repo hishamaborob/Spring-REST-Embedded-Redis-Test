@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean lazy-init="true" id="redisEmbeddedServer" class="redis.embedded.RedisServer"
+          init-method="start" destroy-method="stop"/>
+
+    <bean lazy-init="true" depends-on="redisEmbeddedServer" id="connectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>
+
+    <bean lazy-init="true" depends-on="connectionFactory" id="redisTemplate"
+          class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="connectionFactory"/>
+
+    <bean lazy-init="true" depends-on="connectionFactory" id="redisTemplateStringSet"
+          class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="connectionFactory"/>
+
+    <bean lazy-init="true" depends-on="connectionFactory" id="redisTemplateSetLongSet"
+          class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="connectionFactory"/>
+
+</beans>
